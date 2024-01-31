@@ -1,7 +1,7 @@
 const { Router } = require("express");
 const router = Router();
 const userMiddleware = require("../middleware/user");
-const { User } = require("../db");
+const { User, Course } = require("../db");
 const jwt = require("jsonwebtoken");
 const { JWT_SECRET } = require("../config");
 
@@ -45,16 +45,42 @@ router.post('/signin', async (req, res) => {
     }
 });
 
-router.get('/courses', (req, res) => {
+router.get('/courses', async (req, res) => {
     // Implement listing all courses logic
+    const allCourses = await Course.find({});
+    res.json({
+        Courses: allCourses
+    })
 });
 
-router.post('/courses/:courseId', userMiddleware, (req, res) => {
+router.post('/courses/:courseId', userMiddleware, async (req, res) => {
     // Implement course purchase logic
+    const CourseId = req.params.courseId;
+    const username = req.username;
+    await User.updateOne({ username }, {
+        "$push": {
+            purchasedCourses: CourseId
+        }
+    })
+
+    res.json({
+        msg: "Course added sucessfully"
+    })
+
 });
 
-router.get('/purchasedCourses', userMiddleware, (req, res) => {
+router.get('/purchasedCourses', userMiddleware, async (req, res) => {
     // Implement fetching purchased courses logic
+    const username = req.username;
+    const user = await User.findOne({ username });
+    const Courses = Course.find({
+        _id: {
+            "$in": user.purchasedCourses
+        }
+    })
+    res.json({
+        purchasedCourses: Courses
+    })
 });
 
 module.exports = router

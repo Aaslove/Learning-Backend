@@ -7,6 +7,7 @@ function userMiddleware(req, res, next) {
     const data = token.split(" ");
     const string = data[1];
     const decoded = jwt(string, JWT_SECRET);
+    req.username = decoded.username
     if (decoded.username) {
         next()
     } else {
