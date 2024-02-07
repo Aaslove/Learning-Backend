@@ -134,7 +134,7 @@ router.get('/bulk', async (req, res) => {
     res.json({
         user: users.map(user => ({
             username: user.username,
-            firstname: userfirstname,
+            firstname: user.firstname,
             lastname: user.lastname,
             _id: user._id
         }))

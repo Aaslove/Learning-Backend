@@ -1,6 +1,11 @@
 import React from "react";
+import { useSearchParams } from "react-router-dom";
 
 export const SendMoney = () => {
+  const [serachParams] = useSearchParams();
+  const id = serachParams.get("id");
+  const name = serachParams.get("name");
+
   return (
     <div className="flex justify-center h-screen bg-gray-100">
       <div className="h-full flex flex-col justify-center">
@@ -13,7 +18,7 @@ export const SendMoney = () => {
               <div class="w-12 h-12 rounded-full bg-green-500 flex items-center justify-center">
                 <span class="text-2xl text-white">A</span>
               </div>
-              <h3 class="text-2xl font-semibold">Friend's Name</h3>
+              <h3 class="text-2xl font-semibold">{name}</h3>
             </div>
             <div class="space-y-4">
               <div class="space-y-2">
