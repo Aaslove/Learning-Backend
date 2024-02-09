@@ -8,12 +8,13 @@ export function Dashboard() {
   const [balance, setBalance] = useState(0);
   const [users, setUsers] = useState([]);
   const fetchAmount = async () => {
+    const token = localStorage.getItem("token");
+    console.log(token);
     const { data } = await axios.get(
       "http://localhost:3000/api/v1/account/balance",
       {
         headers: {
-          authorization:
-            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWMwZTRlMzZjNDlhNTYyNzU1NmJhODQiLCJpYXQiOjE3MDcxNDAzMjN9.xvNgn1lo0m66uSjBUrGJVzIMi13GiQfo_ZIhAdTEZxg",
+          authorization: "Bearer " + token,
         },
       }
     );
@@ -21,11 +22,11 @@ export function Dashboard() {
     setBalance(Math.trunc(data.balance));
   };
   const searchUsers = async (e) => {
+    const token = localStorage.getItem("token");
     const value = e.target.value;
     const { data } = await axios.get("http://localhost:3000/api/v1/user/bulk", {
       headers: {
-        authorization:
-          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWMwZTRlMzZjNDlhNTYyNzU1NmJhODQiLCJpYXQiOjE3MDcxNDAzMjN9.xvNgn1lo0m66uSjBUrGJVzIMi13GiQfo_ZIhAdTEZxg",
+        authorization: "Bearer " + token,
       },
       params: {
         filter: value,
@@ -44,7 +45,7 @@ export function Dashboard() {
     <div className="w-full ">
       <Heading />
       <div className="flex mx-4 my-2">
-        <div className="font-bold text-lg">Your balance :</div>
+        <div className="font-bold text-lg">Your balance</div>
         <div className="font-semibold ml-4 text-lg">Rs {balance}</div>
       </div>
       <div className="mx-4">

@@ -10,6 +10,7 @@ export const SendMoney = () => {
   const [amount, setAmount] = useState();
 
   const transferMoney = async () => {
+    const token = localStorage.getItem("token");
     try {
       axios.post(
         "http://localhost:3000/api/v1/account/transfer",
@@ -19,8 +20,7 @@ export const SendMoney = () => {
         },
         {
           headers: {
-            authorization:
-              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWMwZTRlMzZjNDlhNTYyNzU1NmJhODQiLCJpYXQiOjE3MDcxNDAzMjN9.xvNgn1lo0m66uSjBUrGJVzIMi13GiQfo_ZIhAdTEZxg",
+            authorization: "Bearer " + token,
           },
         }
       );
