@@ -3,7 +3,7 @@ import Heading from "../component/Heading";
 import UsersAcc from "../component/UsersAcc";
 import axios from "axios";
 
-function Dashboard() {
+export function Dashboard() {
   const [loader, setLoader] = useState(true);
   const [balance, setBalance] = useState(0);
   const [users, setUsers] = useState([]);
@@ -18,7 +18,7 @@ function Dashboard() {
       }
     );
     console.log(data);
-    setBalance(data.balance);
+    setBalance(Math.trunc(data.balance));
   };
   const searchUsers = async (e) => {
     const value = e.target.value;
@@ -43,9 +43,12 @@ function Dashboard() {
   return (
     <div className="w-full ">
       <Heading />
-      <h3 className="m-4">Your Balance: rs {balance}</h3>
+      <div className="flex mx-4 my-2">
+        <div className="font-bold text-lg">Your balance :</div>
+        <div className="font-semibold ml-4 text-lg">Rs {balance}</div>
+      </div>
       <div className="mx-4">
-        <h3>Users</h3>
+        <div className="font-bold mt-6 text-lg">Users</div>
         <input
           type="text"
           onChange={searchUsers}
@@ -58,7 +61,11 @@ function Dashboard() {
       ) : (
         users.map((user) => {
           console.log(user);
-          return <UsersAcc key={user._id} user={user} />;
+          return (
+            <div className="m-4">
+              <UsersAcc key={user._id} user={user} />;
+            </div>
+          );
         })
       )}
     </div>

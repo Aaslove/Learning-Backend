@@ -1,10 +1,34 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import axios from "axios";
 
 export const SendMoney = () => {
   const [serachParams] = useSearchParams();
   const id = serachParams.get("id");
+  console.log(id);
   const name = serachParams.get("name");
+  const [amount, setAmount] = useState();
+
+  const transferMoney = async () => {
+    try {
+      axios.post(
+        "http://localhost:3000/api/v1/account/transfer",
+        {
+          to: id,
+          amount: amount,
+        },
+        {
+          headers: {
+            authorization:
+              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWMwZTRlMzZjNDlhNTYyNzU1NmJhODQiLCJpYXQiOjE3MDcxNDAzMjN9.xvNgn1lo0m66uSjBUrGJVzIMi13GiQfo_ZIhAdTEZxg",
+          },
+        }
+      );
+      console.log(Done);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className="flex justify-center h-screen bg-gray-100">
@@ -33,9 +57,15 @@ export const SendMoney = () => {
                   class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
                   id="amount"
                   placeholder="Enter amount"
+                  onChange={(e) => {
+                    setAmount(e.target.value);
+                  }}
                 />
               </div>
-              <button class="justify-center rounded-md text-sm font-medium ring-offset-background transition-colors h-10 px-4 py-2 w-full bg-green-500 text-white">
+              <button
+                onClick={transferMoney}
+                class="justify-center rounded-md text-sm font-medium ring-offset-background transition-colors h-10 px-4 py-2 w-full bg-green-500 text-white"
+              >
                 Initiate Transfer
               </button>
             </div>
